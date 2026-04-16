@@ -1,0 +1,8 @@
+$kind: http-request
+name: 'Delete Investor'
+method: DELETE
+url: '{{baseUrl}}/api/investors/:id'
+order: 4374521042580431
+pathVariables:
+  - key: id
+    value: '1'

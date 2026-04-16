@@ -1,0 +1,9 @@
+$kind: http-request
+name: Delete Order By Id
+url: "{{baseUrl}}/api/orders/:id"
+method: DELETE
+pathVariables:
+  - key: id
+    value: "1"
+    $type: ""
+order: 1953594194357884

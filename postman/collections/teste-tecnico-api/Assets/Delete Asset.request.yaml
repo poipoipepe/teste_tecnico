@@ -1,0 +1,9 @@
+$kind: http-request
+name: Delete Asset
+method: DELETE
+url: "{{baseUrl}}/api/assets/:id"
+pathVariables:
+  - key: id
+    value: "1"
+    $type: ""
+order: 1776349471000

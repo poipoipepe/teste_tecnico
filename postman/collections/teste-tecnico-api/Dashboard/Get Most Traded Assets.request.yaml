@@ -1,0 +1,5 @@
+$kind: http-request
+name: 'Get Most Traded Assets'
+method: GET
+url: '{{baseUrl}}/api/dashboard/most-traded-assets'
+order: 1776349427466

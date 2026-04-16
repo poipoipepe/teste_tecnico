@@ -1,0 +1,9 @@
+$kind: http-request
+name: Get Current Investor Position
+method: GET
+url: "{{baseUrl}}/api/dashboard/investors/:investorID/current-position"
+pathVariables:
+  - key: investorID
+    value: "1"
+    $type: ""
+order: 2422784289738411

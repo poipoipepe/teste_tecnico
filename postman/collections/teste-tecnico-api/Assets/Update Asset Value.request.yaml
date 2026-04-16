@@ -1,0 +1,16 @@
+$kind: http-request
+name: Update Asset Value
+url: "{{baseUrl}}/api/assets/:id/current-value"
+method: PATCH
+pathVariables:
+  - key: id
+    value: "4"
+    $type: ""
+body:
+  type: json
+  content: "{\r
+
+    \    \"current_value\": 318.5\r
+
+    }"
+order: 1776349470951

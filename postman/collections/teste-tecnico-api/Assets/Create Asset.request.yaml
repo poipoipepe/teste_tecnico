@@ -1,0 +1,16 @@
+$kind: http-request
+name: Create Asset
+method: POST
+url: "{{baseUrl}}/api/assets"
+order: 1776349470000
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "ticker": "MXRF11",
+      "company_name": "Maxi Renda",
+      "sector": "Imobiliario",
+      "current_value": 9.88
+    }
