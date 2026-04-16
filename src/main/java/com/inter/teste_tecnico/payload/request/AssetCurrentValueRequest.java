@@ -9,6 +9,5 @@ import java.math.BigDecimal;
 public record AssetCurrentValueRequest(
         @NotNull(message = "Current value is required")
         @DecimalMin(value = "0.01", message = "Current value must be greater than zero")
-        @JsonProperty("current_value") 
-        BigDecimal currentValue
+        @JsonProperty("current_value") BigDecimal currentValue
 ) {}
