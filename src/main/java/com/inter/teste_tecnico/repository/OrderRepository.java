@@ -1,7 +1,6 @@
 package com.inter.teste_tecnico.repository;
 
 import com.inter.teste_tecnico.model.Order;
-import com.inter.teste_tecnico.payload.response.AssetPositionResponse;
 import com.inter.teste_tecnico.payload.response.TradedResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,19 +14,9 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByInvestorId(Long investorId);
 
-    boolean existsByAssetId(Long assetId);
+    List<Order> findByInvestorIdOrderByTimestampAsc(Long investorId);
 
-    @Query("""
-            SELECT new com.inter.teste_tecnico.payload.response.AssetPositionResponse(
-                a.ticker,
-                SUM(CASE WHEN o.type = com.inter.teste_tecnico.model.OrderType.BUY THEN o.quantity ELSE -o.quantity END),
-                SUM(CASE WHEN o.type = com.inter.teste_tecnico.model.OrderType.BUY THEN o.price * o.quantity ELSE -(o.price * o.quantity) END)
-            )
-            FROM Order o JOIN o.asset a
-            WHERE o.investor.id = :investorId
-            GROUP BY a.ticker
-            """)
-    List<AssetPositionResponse> findPositionByInvestorId(@Param("investorId") Long investorId);
+    boolean existsByAssetId(Long assetId);
 
     @Query("""
             SELECT new com.inter.teste_tecnico.payload.response.TradedResponse(

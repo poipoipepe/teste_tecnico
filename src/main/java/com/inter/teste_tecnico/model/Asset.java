@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "assets")
 @Data
@@ -25,4 +27,7 @@ public class Asset {
 
     @Column(nullable = false)
     private String sector;
+
+    @Column(name = "current_value", precision = 19, scale = 4, nullable = false)
+    private BigDecimal currentValue;
 }

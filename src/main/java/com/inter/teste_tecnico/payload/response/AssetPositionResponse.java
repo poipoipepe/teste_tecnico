@@ -5,5 +5,10 @@ import java.math.BigDecimal;
 public record AssetPositionResponse(
         String ticker,
         Long quantity,
-        BigDecimal totalValue
+        BigDecimal averageBuyPrice,
+        BigDecimal currentValue,
+        BigDecimal investedValue,
+        BigDecimal marketValue,
+        BigDecimal profitOrLoss,
+        BigDecimal profitOrLossPercent
 ) {}

@@ -1,5 +1,6 @@
 package com.inter.teste_tecnico.controller;
 
+import com.inter.teste_tecnico.payload.request.AssetCurrentValueRequest;
 import com.inter.teste_tecnico.payload.request.AssetRequest;
 import com.inter.teste_tecnico.payload.response.AssetResponse;
 import com.inter.teste_tecnico.service.AssetService;
@@ -31,6 +32,12 @@ public class AssetController {
         log.info("Received request to create asset with ticker: {}", request.ticker());
         AssetResponse createdAsset = assetService.createAsset(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdAsset);
+    }
+
+    @PatchMapping("/{id}/current-value")
+    public ResponseEntity<AssetResponse> updateCurrentValue(@PathVariable Long id, @Valid @RequestBody AssetCurrentValueRequest request) {
+        log.info("Received request to update current value for asset id: {}", id);
+        return ResponseEntity.ok(assetService.updateCurrentValue(id, request.currentValue()));
     }
 
     @DeleteMapping("/{id}")

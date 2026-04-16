@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -24,7 +25,12 @@ public class AssetService {
     public List<AssetResponse> findAll() {
         log.info("Fetching all assets from database");
         List<AssetResponse> assets = assetRepository.findAll().stream()
-                .map(asset -> new AssetResponse(asset.getId(), asset.getTicker(), asset.getCompanyName(), asset.getSector()))
+            .map(asset -> new AssetResponse(
+                asset.getId(),
+                asset.getTicker(),
+                asset.getCompanyName(),
+                asset.getSector(),
+                asset.getCurrentValue()))
                 .toList();
         log.info("Found {} assets", assets.size());
         return assets;
@@ -37,11 +43,34 @@ public class AssetService {
                 .ticker(request.ticker().toUpperCase())
                 .companyName(request.companyName())
                 .sector(request.sector())
+            .currentValue(request.currentValue())
                 .build();
 
         Asset savedAsset = assetRepository.save(asset);
         log.info("Asset created successfully with ID: {}", savedAsset.getId());
-        return new AssetResponse(savedAsset.getId(), savedAsset.getTicker(), savedAsset.getCompanyName(), savedAsset.getSector());
+        return new AssetResponse(
+            savedAsset.getId(),
+            savedAsset.getTicker(),
+            savedAsset.getCompanyName(),
+            savedAsset.getSector(),
+            savedAsset.getCurrentValue());
+        }
+
+        @Transactional
+        public AssetResponse updateCurrentValue(Long id, BigDecimal currentValue) {
+        log.info("Updating current value for asset with ID: {}", id);
+        Asset asset = assetRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Asset not found with id: " + id));
+
+        asset.setCurrentValue(currentValue);
+        Asset updatedAsset = assetRepository.save(asset);
+
+        return new AssetResponse(
+            updatedAsset.getId(),
+            updatedAsset.getTicker(),
+            updatedAsset.getCompanyName(),
+            updatedAsset.getSector(),
+            updatedAsset.getCurrentValue());
     }
 
     @Transactional

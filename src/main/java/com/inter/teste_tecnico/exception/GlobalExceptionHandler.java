@@ -1,4 +1,4 @@
-package com.inter.teste_tecnico.controller;
+package com.inter.teste_tecnico.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
