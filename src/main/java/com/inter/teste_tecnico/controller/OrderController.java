@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/orders")
 @RequiredArgsConstructor
@@ -27,9 +25,10 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
     }
 
-    @GetMapping("/investor/{investorId}")
-    public ResponseEntity<List<OrderResponse>> getOrdersByInvestor(@PathVariable Long investorId) {
-        log.info("Received request to get orders for investor: {}", investorId);
-        return ResponseEntity.ok(orderService.getOrdersByInvestor(investorId));
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteOrderById(@PathVariable Long id) {
+        log.info("Received request to delete order for investor: {}", id);
+        orderService.deleteOrderById(id);
+        return ResponseEntity.noContent().build();
     }
 }

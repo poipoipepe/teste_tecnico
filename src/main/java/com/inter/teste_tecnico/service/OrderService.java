@@ -54,6 +54,18 @@ public class OrderService {
         return toResponse(savedOrder);
     }
 
+    @Transactional
+    public void deleteOrderById(Long id) {
+        log.info("Processing order deletion for order ID: {}", id);
+        if (!orderRepository.existsById(id)) {
+            log.error("Order not found with ID: {}", id);
+            throw new IllegalArgumentException("Order not found with id: " + id);
+        }
+        orderRepository.deleteById(id);
+        log.info("Order deleted successfully with ID: {}", id);
+    }
+
+    @Transactional(readOnly = true)
     public List<OrderResponse> getOrdersByInvestor(Long investorId) {
         log.info("Fetching orders for investor ID: {}", investorId);
         List<OrderResponse> orders = orderRepository.findByInvestorId(investorId).stream()

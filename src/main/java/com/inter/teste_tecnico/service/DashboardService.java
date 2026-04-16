@@ -1,12 +1,15 @@
 package com.inter.teste_tecnico.service;
 
-import com.inter.teste_tecnico.payload.response.AssetTradeCountResponse;
+import com.inter.teste_tecnico.payload.response.AssetPositionResponse;
+import com.inter.teste_tecnico.payload.response.TradedResponse;
+import com.inter.teste_tecnico.repository.InvestorRepository;
 import com.inter.teste_tecnico.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -15,18 +18,24 @@ import java.util.List;
 public class DashboardService {
 
     private final OrderRepository orderRepository;
+    private final InvestorRepository investorRepository;
 
-    public BigDecimal getCurrentPosition() {
-        log.info("Calculating current position (sum of all BUY orders)");
-        BigDecimal position = orderRepository.calculateCurrentPosition();
-        BigDecimal result = position != null ? position : BigDecimal.ZERO;
-        log.info("Calculated current position: {}", result);
-        return result;
+    @Transactional(readOnly = true)
+    public List<AssetPositionResponse> getCurrentInvestorPosition(Long investorId) {
+        log.info("Calculating current position for investor ID: {}", investorId);
+        if (!investorRepository.existsById(investorId)) {
+            log.error("Investor not found with ID: {}", investorId);
+            throw new IllegalArgumentException("Investor not found with id: " + investorId);
+        }
+        List<AssetPositionResponse> positions = orderRepository.findPositionByInvestorId(investorId);
+        log.info("Found {} asset positions for investor ID: {}", positions.size(), investorId);
+        return positions;
     }
 
-    public List<AssetTradeCountResponse> getMostTradedAssets() {
-        log.info("Fetching most traded assets");
-        List<AssetTradeCountResponse> assets = orderRepository.findMostTradedAssets();
+    @Transactional(readOnly = true)
+    public List<TradedResponse> getMostTradedAssets(LocalDateTime from, LocalDateTime to) {
+        log.info("Fetching most traded assets from {} to {}", from, to);
+        List<TradedResponse> assets = orderRepository.findMostTradedAssets(from, to);
         log.info("Found {} most traded assets", assets.size());
         return assets;
     }
